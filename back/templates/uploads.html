@@ -10,8 +10,11 @@
         <div class="col-md-2"></div>
         <div class="col-md-8 mb-3 text-center">
             {{ form.hidden_tag() }}
-            {{ form.photo(multiple="multiple") }}
-             
+            <p>Select a picture</p>
+            {{ form.photo }}
+             <br><br><br>
+            <p>Select a doc</p>
+            {{ form.doc }}
             {% for error in form.photo.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}<br>
@@ -20,17 +23,27 @@
         <div class="col-md-2"></div>
     </div>
     </div>
-</form>
 
-{% if file_url %}
+{% if photo_url %}
 <br>
-<div class="card" style="width: 18rem;">
-<img class="card-img-top" src="{{ file_url }}" alt="Card image cap">
-    <div class="card-body">
-        <p class="card-text">...</p>
+<div class="container">
+    <div class="col-md-6">
+        <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{ photo_url }}" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text">...</p>
+            </div>
+        </div>
     </div>
+<!--     <div class="col-md-6">
+        <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="/Users/jian/code/wordcloud/pic/image_6.jpg" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text">...</p>
+            </div>
+        </div>
+    </div> -->
 </div>
-<!-- <img src="{{ file_url }}"> -->
 {% endif %}
 
 {% endblock %}
