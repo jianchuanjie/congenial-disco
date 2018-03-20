@@ -11,8 +11,9 @@ import os
 
 
 # f = open('zimu.txt')
-img_mask_path = "/Users/jian/code/wordcloud/WC/tupian2.jpg"
-doc_path_default = "/Users/jian/code/wordcloud/WC/dang.docx"
+wd = os.getcwd() + '/WC'
+img_mask_path = os.path.join(wd, "tupian2.jpg")
+doc_path_default = os.path.join(wd, "dang.docx")
 
 
 def changeToGray(tupian="tupian2.jpg"):
@@ -28,7 +29,7 @@ def setBackgroundColor(color="white"):
     return color
 
 
-def setFontPath(path='/Users/jian/code/wordcloud/WC/16.ttf'):
+def setFontPath(path=os.path.join(wd, '16.ttf')):
     return path
 
 
@@ -69,7 +70,7 @@ def removeStopWords(seg_list):
     '''
     wordlist_stopwords_removed = []
 
-    stop_words = open('/Users/jian/code/wordcloud/WC/stops1.txt',encoding = 'utf-8')
+    stop_words = open(os.path.join(wd, 'stops1.txt'),encoding = 'utf-8')
     stop_words_text = stop_words.read()
 
     stop_words.close()
