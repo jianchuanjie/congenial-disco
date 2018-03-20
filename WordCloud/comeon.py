@@ -176,6 +176,8 @@ def readURL(u='http://www.baidu.com'):
     	s=s+str(child).decode('utf-8')#.encode('gb18030')
     fe=re.findall(r"([\u4e00-\u9fa5]+)",s)
     return ' '.join(fe)
+
+
 if __name__ == "__main__":
     #doc = readDocument()
     #segment_list = segment(doc)

@@ -1,15 +1,15 @@
-#!python2
-#coding=utf-8
+#!/usr/bin/env python3
+
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud,ImageColorGenerator
+from wordcloud import WordCloud, ImageColorGenerator
 import jieba
 from scipy.misc import imread
 from PIL import Image
 import docx
 import regex as re
 
-f=open("zimu.txt",'r')
-img_mask=imread("tupian2.jpg")
+f = open("zimu.txt",'r')
+img_mask = imread("tupian2.jpg")
 
 
 def changeToGray(tupian="tupian2.jpg"):
@@ -36,7 +36,7 @@ def readDocument():
     doc = ""
     for para in file.paragraphs:
         doc = doc + para.text
-    print(type(doc))
+    # print(type(doc))
     return doc
 
 def segment(fil=f):
@@ -52,7 +52,7 @@ def segment(fil=f):
     document_after_segment.write(seg_list)
     document_after_segment.close()
     return seg_list
-    
+
 def removeStopWords(seg_list):
     '''
     自行下载stopwords1893.txt停用词表，该函数实现去停用词,英文本身有去停用词的功能，所以不必调用
@@ -66,7 +66,8 @@ def removeStopWords(seg_list):
 
     stop_words_text_list = stop_words_text .split('\n')
     after_seg_text_list = seg_list.split(' ')
-    wordlist_stopwords_removed=[val for val in after_seg_text_list if val not in str(stop_words_text_list)]
+    wordlist_stopwords_removed = [val for val in after_seg_text_list \
+        if val not in str(stop_words_text_list)]
     print(type(stop_words_text_list[0]))
     without_stopwords = open('分词结果(去停用词).txt', 'w')
     without_stopwords.write(' '.join(wordlist_stopwords_removed))
@@ -104,7 +105,7 @@ def WCcreate(seg_list,background_color=setBackgroundColor(), #背景颜色
     relative_scaling=0.4,
     colormap=setColorMap(),
     ):
-    
+
     '''
         制作词云
         设置词云参数
@@ -128,15 +129,15 @@ def WCcreate(seg_list,background_color=setBackgroundColor(), #背景颜色
     image_colors = ImageColorGenerator(color_mask)
     wc.to_file("ciyun.jpg") #保存图片
     #  显示词云图片
-    plt.imshow(wc, interpolation="bilinear")
-    plt.axis('off')
+    # plt.imshow(wc, interpolation="bilinear")
+    # plt.axis('off')
 
-    #这里主要为了实现词云图片按照图片颜色取色
-    plt.figure()
-    plt.imshow(wc.recolor(color_func=image_colors), interpolation="bilinear")
-    plt.axis("off")
+    # #这里主要为了实现词云图片按照图片颜色取色
+    # plt.figure()
+    # plt.imshow(wc.recolor(color_func=image_colors), interpolation="bilinear")
+    # plt.axis("off")
 
-    plt.show()
+    # plt.show()
 
 
 
@@ -145,4 +146,3 @@ if __name__ == "__main__":
     segment_list = segment(doc)
     segment_list_remove_stopwords = removeStopWords(segment_list)
     WCcreate(segment_list_remove_stopwords)
-    
