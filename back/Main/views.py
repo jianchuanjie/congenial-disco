@@ -27,5 +27,10 @@ def uoload_pic():
 
 @main.route('/test', methods=['GET', 'POST'])
 def test():
-    testing = request.form['test']
+    if request.method == 'GET':
+        return 'Please post'
+    try:
+        testing = request.form['test']
+    except:
+        testing = 'wrong!!'
     return jsonify({'test':testing})
