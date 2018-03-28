@@ -1,5 +1,5 @@
 from flask import render_template, redirect, flash, url_for, request
-from flask import current_app
+from flask import current_app, jsonify
 from . import main
 from ..forms import UploadForm
 from .. import photos, docs
@@ -23,3 +23,9 @@ def uoload_pic():
         print(photo_path, doc_path)
         print(gen_pic_url)
     return render_template('uploads.html', form=form, photo_url=gen_pic_url)
+
+
+@main.route('/test', methods=['GET', 'POST'])
+def test():
+    testing = request.form['test']
+    return jsonify({'test':testing})
