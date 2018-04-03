@@ -48,9 +48,9 @@ class Upload(Resource):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('photo', type=str, required=True)
         self.parser.add_argument('doc', type=str, required=True)
-        self.parser.add_argument('max_words', default=2000)
+        self.parser.add_argument('max_words', type=int, default=2000)
         self.parser.add_argument('backgroud_color', default="white", choices=backgroud_colors)
-        self.parser.add_argument('max_font_szie', default="100")
+        self.parser.add_argument('max_font_szie', type=int, default=100)
         self.parser.add_argument('colormap', default="spring", choices=colormaps)
 
     def get(self, text):
