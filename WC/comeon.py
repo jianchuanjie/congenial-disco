@@ -166,7 +166,7 @@ def readURL(u='http://www.baidu.com'):
         r=requests.get(u,timeout=300)
         print(r.status_code)
         r.encoding='r.encoding'
-		
+
     except:
 		return "error"
     #f=re.compile('''\\p{han}+''')

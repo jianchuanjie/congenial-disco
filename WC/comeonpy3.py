@@ -11,7 +11,9 @@ import os
 
 
 # f = open('zimu.txt')
-wd = os.getcwd() + '/WC'
+wd = os.path.join(os.getcwd(), 'WC')
+FONTS_PATH = os.path.join(os.getcwd(), 'fonts')
+
 img_mask_path = os.path.join(wd, "tupian2.jpg")
 doc_path_default = os.path.join(wd, "dang.docx")
 
@@ -29,13 +31,19 @@ def setBackgroundColor(color="white"):
     return color
 
 
-def setFontPath(path=os.path.join(wd, '16.ttf')):
+def setFontPath(path=os.path.join(FONTS_PATH, 'fan' + '.ttf')):
     return path
 
 
 def setColorMap(mp="spring"):
     return mp
 
+
+def setSegList(doc_path=doc_path_default):
+    doc = readDocument(doc_path)
+    segment_list = segment(doc)
+    seg_list = removeStopWords(segment_list)
+    return seg_list
 
 def readDocument(doc_path=doc_path_default):
     '''
@@ -157,6 +165,45 @@ def WCcreate(doc_path=doc_path_default,background_color=setBackgroundColor(), #�
 
     # plt.show()
     return save_path
+
+
+def WC_app_create(seg_list=setSegList(),background_color=setBackgroundColor(), #背景颜色
+    max_words=2000,# 词云显示的最大词数
+    font_path=setFontPath(),
+    mask_path=img_mask_path,#设置背景图片
+    max_font_size=100, #字体最大值
+    random_state=42,
+    relative_scaling=0.4,
+    colormap=setColorMap(),
+    ):
+    '''
+        制作词云
+        设置词云参数
+    '''
+    mask = imread(mask_path)
+    color_mask = mask # 读取背景图片,注意路径
+    wc = WordCloud(
+        #设置字体，不指定就会出现乱码，注意字体路径
+        font_path=font_path,
+        #font_path=path.join(d,'simsun.ttc'),
+        #设置背景色
+        background_color=background_color,
+        #词云形状
+        mask=color_mask,
+        #允许最大词汇
+        max_words=2000,
+        #最大号字体
+        max_font_size=60,
+        colormap=colormap
+    )
+    wc.generate(seg_list) # 产生词云
+    image_colors = ImageColorGenerator(color_mask)
+    save_path = os.path.splitext(mask_path)
+    save_path = save_path[0] + '_wc' + save_path[1]
+    wc.to_file(save_path) #保存图片
+
+    return save_path
+
 
 
 if __name__ == "__main__":
