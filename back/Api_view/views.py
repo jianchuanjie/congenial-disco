@@ -50,7 +50,7 @@ class Upload(Resource):
         self.parser.add_argument('doc', type=str, required=True)
         self.parser.add_argument('max_words', type=int, default=2000)
         self.parser.add_argument('backgroud_color', default="white", choices=backgroud_colors)
-        self.parser.add_argument('max_font_szie', type=int, default=100)
+        self.parser.add_argument('max_font_size', type=int, default=100)
         self.parser.add_argument('colormap', default="spring", choices=colormaps)
 
     def get(self, text):
@@ -63,7 +63,7 @@ class Upload(Resource):
         #     'doc':args['doc'],
         #     'max_words':args['max_words'],
         #     'backgroud_color':args['backgroud_color'],
-        #     'max_font_szie':args['max_font_szie'],
+        #     'max_font_size':args['max_font_size'],
         #     'colormap':args['colormap'],
         #     })
         path = {}
@@ -75,7 +75,7 @@ class Upload(Resource):
         path['doc'] = save_file(doc_name, doc, ext='doc')
         path['gen'] = WCcreate(doc_path=path['doc'], mask_path=path['photo'],
             max_words=args['max_words'], backgroud_color=args['backgroud_color'],
-            max_font_szie=args['max_font_szie'], colormap=args['colormap'])
+            max_font_size=args['max_font_size'], colormap=args['colormap'])
         gpic_b64 = get_file_base64(path['gen']).decode()
         # remove_files(path)
         return jsonify({
