@@ -13,7 +13,7 @@ colormaps = ('viridis', 'plasma', 'inferno', 'magma', 'Greys', 'Purples',
             'bone', 'pink', 'spring', 'summer', 'autumn', 'winter', 'cool',
             'Wistia', 'hot', 'afmhot', 'gist_heat', 'copper')
 
-backgroud_colors = ('white', 'black')
+background_colors = ('white', 'black')
 
 
 def get_name():
@@ -49,7 +49,7 @@ class Upload(Resource):
         self.parser.add_argument('photo', type=str, required=True)
         self.parser.add_argument('doc', type=str, required=True)
         self.parser.add_argument('max_words', type=int, default=2000)
-        self.parser.add_argument('backgroud_color', default="white", choices=backgroud_colors)
+        self.parser.add_argument('background_color', default="white", choices=background_colors)
         self.parser.add_argument('max_font_size', type=int, default=100)
         self.parser.add_argument('colormap', default="spring", choices=colormaps)
 
@@ -62,7 +62,7 @@ class Upload(Resource):
         #     'photo':args['photo'],
         #     'doc':args['doc'],
         #     'max_words':args['max_words'],
-        #     'backgroud_color':args['backgroud_color'],
+        #     'background_color':args['background_color'],
         #     'max_font_size':args['max_font_size'],
         #     'colormap':args['colormap'],
         #     })
@@ -74,7 +74,7 @@ class Upload(Resource):
         doc_name = get_name()
         path['doc'] = save_file(doc_name, doc, ext='doc')
         path['gen'] = WCcreate(doc_path=path['doc'], mask_path=path['photo'],
-            max_words=args['max_words'], backgroud_color=args['backgroud_color'],
+            max_words=args['max_words'], background_color=args['background_color'],
             max_font_size=args['max_font_size'], colormap=args['colormap'])
         gpic_b64 = get_file_base64(path['gen']).decode()
         # remove_files(path)
