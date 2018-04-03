@@ -33,7 +33,7 @@ def setFontPath(path=os.path.join(wd, '16.ttf')):
     return path
 
 
-def setColorMap(mp="winter"):
+def setColorMap(mp="spring"):
     return mp
 
 
