@@ -83,7 +83,7 @@ class Upload(Resource):
         self.parser.add_argument('max_font_size', type=int, default=100)
         self.parser.add_argument('colormap', default="spring", 
             choices=colormaps)
-        self.parser.add_argument('font', type=str, default='fan')
+        self.parser.add_argument('font', type=str, default='fan', choices=fonts)
 
     def get(self, text):
         return jsonify({'test':text})
