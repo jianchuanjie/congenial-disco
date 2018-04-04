@@ -3,53 +3,37 @@
 {% block body %}
 
 <title>Upload File</title>
-<h1 class="text-center">File Upload</h1>
-<form method="POST" enctype="multipart/form-data">
-    <div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 mb-3 text-center">
-            {{ form.hidden_tag() }}
-            <p>Select a picture</p>
-            {{ form.photo }}
-             <br><br><br>
-            <p>Select a doc</p>
-            {{ form.doc }}
-            {% for error in form.photo.errors %}
-                <span style="color: red;">{{ error }}</span>
-            {% endfor %}<br><br><br>
-            {{ form.submit(class="btn btn-dark") }}
-        </div>
-        <div class="col-md-2"></div>
-    </div>
-    </div>
-
-{% if photo_url %}
+<h1 class="text-center">Word Could</h1>
 <br>
+
 <div class="container">
+    <div class="row">
+    <!-- <div class="col-md-2"></div> -->
+    <div class="col-md-6 mb-3 text-center">
+        <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <p>Please Select a picture</p>
+                {{ form.photo }}
+                 <br><br><br>
+                <p>Please Select a doc</p>
+                {{ form.doc }}
+                {% for error in form.photo.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}<br><br><br>
+                {{ form.submit(class="btn btn-dark") }}
+        </form>
+    </div>
+{% if photo_url %}
     <div class="col-md-6">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 24rem;">
         <img class="card-img-top" src="{{ photo_url }}" alt="Card image cap">
             <div class="card-body">
                 <p class="card-text">...</p>
             </div>
         </div>
     </div>
-<!--     <div class="col-md-6">
-        <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="/Users/jian/code/wordcloud/pic/image_6.jpg" alt="Card image cap">
-            <div class="card-body">
-                <p class="card-text">...</p>
-            </div>
-        </div>
-    </div> -->
-</div>
-{% else %}
-<div class="col-md-2"></div>
-        <div class="col-md-8 mb-3 text-center">
-        <p>photo_url is None</p>
-        </div>
-        <div class="col-md-2"></div>
 {% endif %}
+    </div>
+</div>
 
 {% endblock %}
