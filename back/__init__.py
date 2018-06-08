@@ -1,9 +1,11 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, configure_uploads, UploadSet
 from flask_uploads import IMAGES, patch_request_class, DOCUMENTS
 from flask_restful import Api
 
 
+db = SQLAlchemy()
 photos = UploadSet('photos', IMAGES)
 docs = UploadSet('docs', ('doc', 'docx'))
 api = Api()
@@ -15,6 +17,7 @@ def create_app():
     # app.config.from_object('config')
     app.config.from_pyfile('config.py')
 
+    db.init_app(app)
     configure_uploads(app, photos)
     configure_uploads(app, docs)
     patch_request_class(app)

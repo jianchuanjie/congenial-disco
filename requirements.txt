@@ -8,9 +8,11 @@ cycler==0.10.0
 Flask==0.12.2
 Flask-RESTful==0.3.6
 Flask-Script==2.0.6
+Flask-SQLAlchemy==2.3.2
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.2
 idna==2.6
+impacket==0.9.15
 itsdangerous==0.24
 jieba==0.39
 Jinja2==2.10
@@ -28,6 +30,7 @@ regex==2018.2.21
 requests==2.18.4
 scipy==1.0.0
 six==1.11.0
+SQLAlchemy==1.2.7
 urllib3==1.22
 Werkzeug==0.14.1
 wordcloud==1.4.1

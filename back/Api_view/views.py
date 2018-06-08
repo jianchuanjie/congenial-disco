@@ -1,6 +1,5 @@
 from flask import render_template, redirect, flash, url_for, request
 from flask import current_app, jsonify, abort
-from .. import api
 import os, time, hashlib, base64, imghdr
 from flask_restful import Resource, reqparse
 from WC.comeonpy3 import WC_app_create, readDocument, segment
@@ -103,6 +102,12 @@ class Upload(Resource):
         #     'font':args['font'],
         #     })
         path = {}
+        if args['doc'] is None:
+            args['doc'] = 'test'
+        return jsonify({
+            'photo': args['photo'],
+            'doc': args['doc'],
+            })
         try:
             path['photo'] = from_photo_get_photo_path(args['photo'])
         except:
@@ -146,5 +151,3 @@ class Upload(Resource):
             'pic_b64':gpic_b64,
             })
 
-
-api.add_resource(Upload, '/api/<text>')
