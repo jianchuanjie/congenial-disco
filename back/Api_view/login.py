@@ -5,9 +5,9 @@ from .. import db
 from ..models import User
 
 
-class Register(Resource):
+class Login(Resource):
     '''
-    This is a Register class for RESTful API
+    This is a Login class for RESTful API
     @param: username
     @param: password
     '''
@@ -25,17 +25,13 @@ class Register(Resource):
 
         if username is None or password is None:
             abort(400)
-        user = User(username=username, password=password)
-        print(user)
-        try:
-            db.session.add(user)
-            db.session.commit()
-            print("Resource user successfully")
+        user = User.query.filter_by(username=username).first()
+        if user is None or not user.verify(password):
             return jsonify({
-                'code': 200,
+                'code': 403,
+                'message': 'username or password is wrong !',
                 })
-        except:
-            print("Register user failed")
-            return jsonify({
-                'code': 400,
-                })
+        return jsonify({
+            'code': 200,
+            'message': 'login success',
+            })

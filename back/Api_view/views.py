@@ -4,71 +4,19 @@ import os, time, hashlib, base64, imghdr
 from flask_restful import Resource, reqparse
 from WC.comeonpy3 import WC_app_create, readDocument, segment
 from WC.comeonpy3 import FONTS_PATH, removeStopWords
-
-
-types = (1, 2, 3)
-
-colormaps = ('viridis', 'plasma', 'inferno', 'magma', 'Greys', 'Purples',
-            'Blues', 'Greens', 'Oranges', 'Reds', 'YlOrBr', 'YlOrRd', 'OrRd',
-            'PuRd', 'RdPu', 'BuPu', 'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn',
-            'BuGn', 'YlGn', 'binary', 'gist_yarg', 'gist_gray', 'gray',
-            'bone', 'pink', 'spring', 'summer', 'autumn', 'winter', 'cool',
-            'Wistia', 'hot', 'afmhot', 'gist_heat', 'copper')
-
-background_colors = ('white', 'black')
-
-fonts = ('caiyun', 'kaiti', 'shaonv', 'xingkai', 'yasong', 'zhongsong', 'fan')
-
-
-def get_name():
-    return hashlib.md5(('wc' + str(time.time())).encode()).hexdigest()[:15]
-
-
-def save_file(name, file, ext=None):
-    if ext is None:
-        ext = imghdr.what(None, file)
-    if ext is None:
-        return None
-
-    s_path = os.path.join(os.getcwd(), 'file', name+'.'+ext)
-    f = open(s_path, 'wb')
-    f.write(file)
-    f.close()
-    return s_path
-
-
-def from_doc_get_word_list(doc):
-    doc = base64.b64decode(doc.encode())
-    doc_name = get_name()
-    doc_path = save_file(doc_name, doc, ext='doc')
-    doc = readDocument(doc_path)
-    segment_list = segment(doc)
-    seg_list = removeStopWords(segment_list)
-    return (doc_path, seg_list)
-
-
-def from_photo_get_photo_path(photo):
-    photo = base64.b64decode(photo.encode())
-    photo_name = get_name()
-    photo_path = save_file(photo_name, photo)
-    return photo_path
-
-
-def from_font_get_font_path(font):
-    return os.path.join(FONTS_PATH, font + '.ttf')
-
-
-def get_file_base64(path):
-    f = open(path, 'rb').read()
-    return  base64.b64encode(f)
-
-
-def remove_files(paths):
-    for path in paths.values():
-        os.remove(path)
+from .utils import types, colormaps, background_colors, fonts
+from .utils import from_doc_get_word_list, from_font_get_font_path,\
+    from_photo_get_photo_path, get_file_base64, get_name,\
+    remove_files, remove_files
+from ..models import User, Photo_Path
 
 
 class Upload(Resource):
+    '''
+    This is a upload class for RESTful API.
+    And this is the main class for handle with
+    the data that comes from XuanYun APP
+    '''
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('type', type=int, default=1, choices=types)
@@ -83,6 +31,8 @@ class Upload(Resource):
         self.parser.add_argument('colormap', default="spring", 
             choices=colormaps)
         self.parser.add_argument('font', type=str, default='fan', choices=fonts)
+        self.parser.add_argument('username', type=str)
+
 
     def get(self, text):
         return jsonify({'test':text})
@@ -139,7 +89,21 @@ class Upload(Resource):
             font_path=from_font_get_font_path(args['font'])
             )
         gpic_b64 = get_file_base64(path['gen']).decode()
+
+        if args['username'] is not None:
         # remove_files(path)
+            username = args['username']
+            try:
+                user = User.query.filter_by(username=username).first()
+                photo_path = Photo_Path(path=path['gen'], userid=user.id)
+                db.session.add(photo_path)
+                db.session.commit()
+            except:
+                jsonify({
+                    'code': '403',
+                    'message': 'No this user',
+                    })
+
         return jsonify({
             'code':'200',
             'where':text,
@@ -150,4 +114,3 @@ class Upload(Resource):
             # 'doc':doc.decode()[:30],
             'pic_b64':gpic_b64,
             })
-
