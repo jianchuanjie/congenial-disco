@@ -30,7 +30,7 @@ class Register(Resource):
         try:
             db.session.add(user)
             db.session.commit()
-            print("Resource user successfully")
+            print("Register user successfully")
             return jsonify({
                 'code': 200,
                 })

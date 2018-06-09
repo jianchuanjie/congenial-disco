@@ -34,10 +34,10 @@ class Upload(Resource):
         self.parser.add_argument('username', type=str)
 
 
-    def get(self, text):
-        return jsonify({'test':text})
+    def get(self):
+        return jsonify({'test':'test'})
 
-    def post(self, text):
+    def post(self):
         args = self.parser.parse_args()
         # return jsonify({
         #     'type':args['type'],
@@ -52,12 +52,6 @@ class Upload(Resource):
         #     'font':args['font'],
         #     })
         path = {}
-        if args['doc'] is None:
-            args['doc'] = 'test'
-        return jsonify({
-            'photo': args['photo'],
-            'doc': args['doc'],
-            })
         try:
             path['photo'] = from_photo_get_photo_path(args['photo'])
         except:
@@ -90,8 +84,8 @@ class Upload(Resource):
             )
         gpic_b64 = get_file_base64(path['gen']).decode()
 
-        if args['username'] is not None:
         # remove_files(path)
+        if args['username'] is not None:
             username = args['username']
             try:
                 user = User.query.filter_by(username=username).first()
@@ -99,14 +93,13 @@ class Upload(Resource):
                 db.session.add(photo_path)
                 db.session.commit()
             except:
-                jsonify({
+                return jsonify({
                     'code': '403',
                     'message': 'No this user',
                     })
 
         return jsonify({
             'code':'200',
-            'where':text,
             # 'photo_path':path['photo'],
             # 'gpic_path':path['gen'],
             # 'photo':photo.decode()[:30],

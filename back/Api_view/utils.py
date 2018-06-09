@@ -57,8 +57,11 @@ def from_font_get_font_path(font):
 
 
 def get_file_base64(path):
-    f = open(path, 'rb').read()
-    return  base64.b64encode(f)
+    try:
+        f = open(path, 'rb').read()
+        return  base64.b64encode(f)
+    except:
+        return None
 
 
 def remove_files(paths):

@@ -14,7 +14,7 @@ class User(db.Model):
         return '<User %s>' % self.username
 
     def verify(self, pd):
-        if pd == password:
+        if pd == self.password:
             return True
         else:
             return False
