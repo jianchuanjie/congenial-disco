@@ -7,7 +7,7 @@ from scipy.misc import imread
 from PIL import Image
 import docx
 import regex as re
-import os
+import os, collections
 
 
 # f = open('zimu.txt')
@@ -113,7 +113,7 @@ def wordCount(segment_list):  #函数更新
                   else:
                       word_dict[item2] += 1
 
-    word_dict_sorted = dict(sorted(word_dict.items(), \
+    word_dict_sorted = collections.OrderedDict(sorted(word_dict.items(), \
     key = lambda item:item[1], reverse=True))#按照词频从大到小排序
 #        for key in word_dict_sorted:#如果更改词频，考虑从此处入手
 #            wf2.write(key+' '+str(word_dict_sorted[key])+'\n') 

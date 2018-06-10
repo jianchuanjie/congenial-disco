@@ -1,4 +1,4 @@
-import os, hashlib, base64, time, imghdr
+import os, hashlib, base64, time, imghdr, collections
 from WC.comeonpy3 import readDocument, segment,\
     FONTS_PATH, removeStopWords
 
@@ -72,11 +72,11 @@ def remove_files(paths):
 
 
 def forward_wordlist(word_list, maxwords=20):
-    assert type(word_list) == dict
+# assert type(word_list) == dict
     if(len(word_list) <= maxwords):
         return word_list
     else:
-        wordlist = {}
+        wordlist = collections.OrderedDict()
         cnt = 0
         for k, v in word_list.items():
             wordlist[k] = v

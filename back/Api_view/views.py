@@ -102,6 +102,7 @@ class Upload(Resource):
                     'message': 'database something wrong',
                     })
         wordlist = forward_wordlist(word_list)
+        print(word_list, wordlist, sep='\n\n')
         return jsonify({
             'code':'200',
             'wordlist': json.dumps(wordlist),
