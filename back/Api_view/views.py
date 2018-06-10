@@ -1,14 +1,15 @@
 from flask import render_template, redirect, flash, url_for, request
 from flask import current_app, jsonify, abort
-import os, time, hashlib, base64, imghdr
+import os, time, hashlib, base64, imghdr, json
 from flask_restful import Resource, reqparse
-from WC.comeonpy3 import WC_app_create, readDocument, segment
-from WC.comeonpy3 import FONTS_PATH, removeStopWords
+from WC.comeonpy3 import WC_app_create, readDocument, segment,\
+    FONTS_PATH, removeStopWords, wordCount, changeFre
 from .utils import types, colormaps, background_colors, fonts
 from .utils import from_doc_get_word_list, from_font_get_font_path,\
     from_photo_get_photo_path, get_file_base64, get_name,\
     remove_files, remove_files
 from ..models import User, Photo_Path
+from .. import db
 
 
 class Upload(Resource):
@@ -32,6 +33,7 @@ class Upload(Resource):
             choices=colormaps)
         self.parser.add_argument('font', type=str, default='fan', choices=fonts)
         self.parser.add_argument('username', type=str)
+        self.parser.add_argument('changelist', type=str)
 
 
     def get(self):
@@ -39,18 +41,6 @@ class Upload(Resource):
 
     def post(self):
         args = self.parser.parse_args()
-        # return jsonify({
-        #     'type':args['type'],
-        #     'photo':args['photo'],
-        #     'doc':args['doc'],
-        #     'txt':args['txt'],
-        #     'url':args['url'],
-        #     'max_words':args['max_words'],
-        #     'background_color':args['background_color'],
-        #     'max_font_size':args['max_font_size'],
-        #     'colormap':args['colormap'],
-        #     'font':args['font'],
-        #     })
         path = {}
         try:
             path['photo'] = from_photo_get_photo_path(args['photo'])
@@ -73,6 +63,13 @@ class Upload(Resource):
             except:
                 abort(404)
 
+        if args['changelist'] is None:
+            word_list = wordCount(word_list)
+        else:
+            changelist = args['changelist']
+            changelist = json.loads(changelist.replace("'", '"'))
+            word_list = changeFre(wordCount(word_list), changelist)
+
         path['gen'] = WC_app_create(
             seg_list=word_list,
             mask_path=path['photo'],
@@ -89,21 +86,23 @@ class Upload(Resource):
             username = args['username']
             try:
                 user = User.query.filter_by(username=username).first()
+            except:
+                return jsonify({
+                    'code': '403',
+                    'message': 'No this user',
+                    })
+            try:
                 photo_path = Photo_Path(path=path['gen'], userid=user.id)
                 db.session.add(photo_path)
                 db.session.commit()
             except:
                 return jsonify({
                     'code': '403',
-                    'message': 'No this user',
+                    'message': 'database something wrong',
                     })
 
         return jsonify({
             'code':'200',
-            # 'photo_path':path['photo'],
-            # 'gpic_path':path['gen'],
-            # 'photo':photo.decode()[:30],
-            # 'doc_path':path['doc'],
-            # 'doc':doc.decode()[:30],
+            'wordlist': json.dumps(word_list),
             'pic_b64':gpic_b64,
             })

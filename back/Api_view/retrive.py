@@ -29,7 +29,7 @@ class Retrive(Resource):
                 })
         try:
             photo_path = Path.query.filter_by(userid=user.id).order_by(Path.id.desc()).first().path
-            gpic_b64 = get_file_base64(photo_path)
+            gpic_b64 = get_file_base64(photo_path).decode()
             return jsonify({
                 'code': 200,
                 'pic_b64': gpic_b64,

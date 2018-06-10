@@ -1,4 +1,7 @@
-import hashlib, base64, time, imghdr
+import os, hashlib, base64, time, imghdr
+from WC.comeonpy3 import readDocument, segment,\
+    FONTS_PATH, removeStopWords
+
 
 '''
 some mess functions and choices for Upload arguments
