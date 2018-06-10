@@ -7,7 +7,7 @@ from WC.comeonpy3 import WC_app_create, readDocument, segment,\
 from .utils import types, colormaps, background_colors, fonts
 from .utils import from_doc_get_word_list, from_font_get_font_path,\
     from_photo_get_photo_path, get_file_base64, get_name,\
-    remove_files, remove_files
+    remove_files, remove_files, forward_wordlist
 from ..models import User, Photo_Path
 from .. import db
 
@@ -101,9 +101,9 @@ class Upload(Resource):
                     'code': '403',
                     'message': 'database something wrong',
                     })
-
+        wordlist = forward_wordlist(word_list)
         return jsonify({
             'code':'200',
-            'wordlist': json.dumps(word_list),
+            'wordlist': json.dumps(wordlist),
             'pic_b64':gpic_b64,
             })

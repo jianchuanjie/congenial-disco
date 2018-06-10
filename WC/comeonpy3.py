@@ -69,7 +69,7 @@ def segment(fil):
     # document_after_segment = open('分词结果.txt', 'w+')
     # document_after_segment.write(seg_list)
     # document_after_segment.close()
-    return seg_list
+    return removeStopWords(seg_list)
 
 
 def removeStopWords(seg_list):

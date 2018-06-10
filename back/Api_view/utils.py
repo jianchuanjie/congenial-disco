@@ -44,8 +44,7 @@ def from_doc_get_word_list(doc):
     doc_path = save_file(doc_name, doc, ext='doc')
     doc = readDocument(doc_path)
     segment_list = segment(doc)
-    seg_list = removeStopWords(segment_list)
-    return (doc_path, seg_list)
+    return (doc_path, segment_list)
 
 
 def from_photo_get_photo_path(photo):
@@ -70,3 +69,18 @@ def get_file_base64(path):
 def remove_files(paths):
     for path in paths.values():
         os.remove(path)
+
+
+def forward_wordlist(word_list, maxwords=20):
+    assert type(word_list) == dict
+    if(len(word_list) <= maxwords):
+        return word_list
+    else:
+        wordlist = {}
+        cnt = 0
+        for k, v in word_list.items():
+            wordlist[k] = v
+            cnt += 1
+            if cnt >= maxwords:
+                break
+        return wordlist
