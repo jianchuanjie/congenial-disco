@@ -212,10 +212,12 @@ def WC_app_create(seg_list=setSegList(),background_color=setBackgroundColor(), #
 
 def changeFre(word_dict,changelist):   #函数更新
     #with open('词频统计(去停用词).txt','w') as wf2:
-    for item in changelist:
-            if item[0] !=' ':
-                    print(type(item[0]),type(item[1]))
-                    word_dict[item[0]] = item[1]
+    # for item in changelist:
+    #         if item[0] !=' ':
+    #                 print(type(item[0]),type(item[1]))
+    #                 word_dict[item[0]] = item[1]
+    for k, v in changelist.items():
+        word_dict[k] = v
     lis=[]
     lis=sorted(word_dict.items(), \
     key = lambda item:item[1], reverse=True)
