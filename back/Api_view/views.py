@@ -7,7 +7,7 @@ from WC.comeonpy3 import WC_app_create, readDocument, segment,\
 from .utils import types, colormaps, background_colors, fonts
 from .utils import from_doc_get_word_list, from_font_get_font_path,\
     from_photo_get_photo_path, get_file_base64, get_name,\
-    remove_files, remove_files, forward_wordlist
+    remove_files, remove_files, forward_wordlist, make_change
 from ..models import User, Photo_Path
 from .. import db
 
@@ -68,8 +68,15 @@ class Upload(Resource):
             word_list = wordCount(word_list)
         else:
             changelist = args['changelist']
-            changelist = json.loads(changelist.replace("'", '"'))
-            word_list = changeFre(wordCount(word_list), changelist)
+            try:
+                changelist = json.loads(changelist.replace("'", '"'))
+                changelist = make_change(changelist)
+                word_list = changeFre(wordCount(word_list), changelist)
+            except:
+                return jsonify({
+                    'code':2333,
+                    'message':'changelist something wrong!',
+                    })
 
         path['gen'] = WC_app_create(
             seg_list=word_list,

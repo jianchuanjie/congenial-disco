@@ -84,3 +84,11 @@ def forward_wordlist(word_list, maxwords=20):
             if cnt >= maxwords:
                 break
         return wordlist
+
+
+def make_change(changelist):
+    assert type(changelist) == dict
+    for k, v in changelist.items():
+        changelist[k] = int(v)
+    return changelist
+

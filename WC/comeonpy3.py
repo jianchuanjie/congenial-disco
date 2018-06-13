@@ -196,7 +196,7 @@ def WC_app_create(seg_list=setSegList(),background_color=setBackgroundColor(), #
         #词云形状
         mask=color_mask,
         #允许最大词汇
-        max_words=2000,
+        max_words=500,
         #最大号字体
         max_font_size=60,
         colormap=colormap
